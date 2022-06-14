@@ -1,0 +1,24 @@
+JAVASCRIPT:
+	- Aprender TypeScript
+	 ■ Proyecto connjunto
+C LANG:
+	- Estructuras de datos:
+	 ■ Lista enlazada simple
+	 ■ Lista enlazada doble
+	 ■ Set
+	 ■ Cola
+	 ■ Pila
+	 ■ HashMap
+   	 ■ Grafo
+	 ■ Arbol Binario
+	 ■ Arbol N-ario
+C++:
+	- Simular Base de datos
+
+HASKELL:
+	- Guia de la documentación
+	 ■ Xmonad
+
+Lisp Lang:
+	- Guia de la documentación
+	 ■ Plugins con Nvim 
