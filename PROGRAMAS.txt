@@ -3,7 +3,7 @@ JAVASCRIPT:
 	 ■ Proyecto connjunto
 C LANG:
 	- Estructuras de datos:
-	 ■ Lista enlazada simple
+	 ■ Lista enlazada simple ✓
 	 ■ Lista enlazada doble
 	 ■ Set
 	 ■ Cola
@@ -21,4 +21,4 @@ HASKELL:
 
 Lisp Lang:
 	- Guia de la documentación
-	 ■ Plugins con Nvim 
+	 ■ Plugins con Nvim
