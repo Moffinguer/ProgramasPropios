@@ -1,79 +1,112 @@
 #include <stdio.h>
-
-struct Node
+#include <stdlib.h>
+struct Element
 {
   double value;
-  struct Node *nextNode;
+  struct Element *nextNode;
 };
 
-struct LinkedList
+struct Container
 {
-  struct Node *initialNode;
+  int size;
+  struct Element *initialNode;
 };
+
+typedef struct Container Linkedlist;
+typedef struct Element Node;
 
 int
-addFirstElement (struct LinkedList *container, struct Node *newElement)
+addFirstElement (Linkedlist *container, Node *newElement)
 {
   container->initialNode = newElement;
   return 1;
 }
 
 int
-add (struct LinkedList *container, struct Node *newElement)
+add (Linkedlist *container, Node *newElement)
 {
-  struct Node *iterator = container->initialNode;
+  Node *iterator = container->initialNode;
   int addedCorrectly = 1;
   if (iterator == NULL)
     addedCorrectly = addFirstElement (container, newElement);
   else
     {
       while (iterator->nextNode != NULL)
-	iterator = iterator->nextNode;
+	      iterator = iterator->nextNode;
       iterator->nextNode = newElement;
     }
-  return addedCorrectly;
-
+    container->size++;
+    return addedCorrectly;
 }
-/*Esta funcion no genera bien la dirección de memoria, pasa algo raro*/
+/*El uso de malloc, reserva memoria, por lo tanto no perdemos el puntero*/
 int
-addValue (struct LinkedList *container, double val)
+addValue (Linkedlist *container, double val)
 {
-  struct Node newElement = {val, NULL};
-  return add (container, &newElement);
+  Node *newElement = malloc(sizeof(Node));
+  newElement->value = val;
+  newElement->nextNode = NULL;
+  return add(container, newElement);
 }
+Node*
+searchValue(Linkedlist *container, double val){
+   Node *element = container->initialNode;
+   while (element != NULL && element->value != val)
+      element = element->nextNode;
+   return element;
+}
+
+// TODO Remove by index
+
+// int
+// removeValue(Linkedlist* container, int index){
+//    Node *element = container->initialNode;
+//    int i = 0;
+//    while (element != NULL)
+//      element = element->nextNode;
+//    return element;
+// }
 
 void
-printList (struct LinkedList *container)
+printList (Linkedlist *container)
 {
-  struct Node *element = container->initialNode;
-  printf("HEADER => ");
+  Node *element = container->initialNode;
+  printf("[");
+  int i = 0;
   while (element != NULL)
-    {
-      printf ("%f -> ", element->value);
-      element = element->nextNode;
+  {
+    printf("(%d)%f, ",i++, element->value);
+    element = element->nextNode;
     }
-    printf("NULL\n");
+    printf("]\n");
 }
-
 int
 main ()
 {
-  struct LinkedList container = { NULL };
-  struct Node val = { 15., NULL };
-  struct Node val2 = { -19., NULL };
-  struct Node val3 = {29., NULL};
-  if (add(&container, &val))
-    printf ("Añadimos un elemento en la cabecera: %f\n",
-	    container.initialNode->value);
-  if (add(&container, &val2))
-    printf ("Añadimos un elemento después: %f\n",
-	    container.initialNode->nextNode->value);
-  if (add(&container, &val3))
-    printf ("Otro más: %f\n",
-	    container.initialNode->nextNode->nextNode->value);
-  if(addValue(&container, 29.5)){
-      printf ("Y otro más: %f\n",
-	    container.initialNode->nextNode->nextNode->nextNode->value);
-  }
+  Linkedlist container;
+  Node val, val2, val3;
+  val.value = 15.;
+  val.nextNode = NULL;
+  val2.value = -19.;
+  val2.nextNode = NULL;
+  val3.value = 29.;
+  val3.nextNode = NULL;
+  //Tests manuales
+  add(&container, &val);
+  add(&container, &val2);
+  add(&container, &val3);
+  //Test con un solo valor
+  addValue(&container, 29.5);
+  //Test con un for
+  for (int i = 0; i < 11; i++)
+    addValue(&container, i * 1.);
   printList(&container);
+  //Test elemento dentro, y fuera de la lista
+  double ejemplo = 10.;
+  Node* valor = searchValue(&container, ejemplo);
+  printf("El valor %f está? %d\n", ejemplo, valor != NULL);
+  ejemplo *= -1;
+  valor = searchValue(&container, ejemplo);
+  printf("El valor %f está? %d\n", ejemplo, valor != NULL);
+  //Tamaño lista
+  printf("Tamaño de %d\n", container.size);
 }
